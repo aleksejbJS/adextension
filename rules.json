@@ -1,24 +1,101 @@
 {
   "networks": {
     "TrafficStars": {
-      "domains": ["lcdn.tsyndicate.com", "pxl.tsyndicate.com", "tsyndicate.com"],
-      "textPatterns": ["ads by trafficstars"],
-      "containerSelectors": [".mn-thumb", ".dsa_container"]
+      "domains": [
+        "tsyndicate.com", "lcdn.tsyndicate.com", "pxl.tsyndicate.com",
+        "cdn.tsyndicate.com", "trafficstars.com"
+      ],
+      "textPatterns": ["ads by trafficstars", "powered by trafficstars"],
+      "containerSelectors": [".mn-thumb", ".dsa_container"],
+      "scriptPatterns": ["tsyndicate"]
     },
     "ExoClick": {
-      "domains": ["a.magsrv.com", "s.orbsrv.com", "s3t3d2y9.afcdn.net", "aucdn.net"]
+      "domains": [
+        "a.magsrv.com", "s.orbsrv.com", "syndication.exoclick.com",
+        "static.exoclick.com", "main.exoclick.com", "ads.exoclick.com",
+        "s3t3d2y9.afcdn.net", "aucdn.net"
+      ],
+      "scriptPatterns": ["exoclick", "exosrv", "magsrv", "orbsrv"],
+      "textPatterns": ["exoclick"]
+    },
+    "JuicyAds": {
+      "domains": [
+        "js.juicyads.com", "poweredby.jads.co", "static.juicyads.com",
+        "cdn.juicyads.com", "ads.juicyads.com"
+      ],
+      "scriptPatterns": ["juicyads", "jads.co"],
+      "textPatterns": ["juicyads"]
+    },
+    "TrafficJunky": {
+      "domains": [
+        "cdn.trafficjunky.net", "ads.trafficjunky.net",
+        "media.trafficjunky.net", "static.trafficjunky.net",
+        "hw-cdn.trafficjunky.net"
+      ],
+      "scriptPatterns": ["trafficjunky"],
+      "textPatterns": ["trafficjunky"]
+    },
+    "PopAds": {
+      "domains": [
+        "serve.popads.net", "c1.popads.net", "api.popads.net"
+      ],
+      "scriptPatterns": ["popads"]
+    },
+    "Adsterra": {
+      "domains": [
+        "ad.a-ads.com", "www.profitabledisplaynetwork.com",
+        "www.highperformancedformats.com", "hb.adsrvnw.com",
+        "d2eflp8e8moabl.cloudfront.net", "adsrvnw.com"
+      ],
+      "scriptPatterns": ["adsterra", "adsrvnw", "profitabledisplay", "highperformanced"]
+    },
+    "PropellerAds": {
+      "domains": [
+        "cdn.propellerads.com", "ad.propellerads.com",
+        "propu.sh", "propellerads.com"
+      ],
+      "scriptPatterns": ["propellerads", "propu.sh"]
+    },
+    "ClickAdilla": {
+      "domains": [
+        "s.clickadilla.com", "cdn.clickadilla.com",
+        "clickadilla.com"
+      ],
+      "scriptPatterns": ["clickadilla"]
+    },
+    "HilltopAds": {
+      "domains": [
+        "www.hilltopads.net", "hilltopads.net",
+        "ads.hilltopads.net"
+      ],
+      "scriptPatterns": ["hilltopads"]
+    },
+    "EroAdvertising": {
+      "domains": [
+        "ads.eroadvertising.com", "eroadvertising.com"
+      ],
+      "scriptPatterns": ["eroadvertising"]
+    },
+    "TrafficFactory": {
+      "domains": [
+        "cdn.trafficfactory.biz", "trafficfactory.biz",
+        "ads.trafficfactory.biz"
+      ],
+      "scriptPatterns": ["trafficfactory"]
     },
     "DigitalPerformance": {
       "domains": ["rtbsuperhub.com"],
-      "iframeWrapper": "div"
+      "iframeWrapper": "div",
+      "scriptPatterns": ["rtbsuperhub"]
     },
     "TubeCorporate": {
-      "domains": ["poloptrex.com"]
+      "domains": ["poloptrex.com"],
+      "scriptPatterns": ["poloptrex"]
     }
   },
   "formatRules": {
     "video_preroll": {
-      "parentSelectors": [".video-player", ".jw-wrapper", ".vjs-tech", ".plyr"]
+      "parentSelectors": [".video-player", ".jw-wrapper", ".vjs-tech", ".plyr", ".flowplayer"]
     },
     "outstream": {
       "classHints": ["outstream", "in-article", "inread", "in-content-video"]
@@ -33,6 +110,13 @@
         "336x280", "300x600", "970x90", "250x250", "200x200",
         "468x60", "120x600", "900x250"
       ]
+    },
+    "popunder": {
+      "scriptHints": ["popunder", "popUnder", "pop_under", "tabunder", "clickunder"]
+    },
+    "interstitial": {
+      "classHints": ["interstitial", "fullscreen-ad", "overlay-ad"],
+      "sizeThreshold": 0.7
     }
   }
 }

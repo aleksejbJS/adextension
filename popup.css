@@ -1,0 +1,46 @@
+body { font-family: sans-serif; padding: 8px; width: 340px; margin: 0; font-size: 13px; }
+h3 { margin: 0 0 8px; font-size: 15px; }
+
+/* Tabs */
+.tabs { display: flex; gap: 4px; margin-bottom: 8px; }
+.tab { flex: 1; padding: 5px; border: 1px solid #ccc; background: #f5f5f5; cursor: pointer; border-radius: 4px 4px 0 0; font-size: 12px; }
+.tab.active { background: #fff; border-bottom-color: #fff; font-weight: bold; }
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+/* Actions */
+.actions { display: flex; gap: 4px; margin-bottom: 6px; }
+.actions button { flex: 1; padding: 6px; cursor: pointer; font-size: 12px; }
+
+/* Density bar */
+#density-bar { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; font-size: 11px; }
+.bar { flex: 1; height: 8px; background: #e5e7eb; border-radius: 4px; overflow: hidden; }
+.bar-fill { height: 100%; background: #facc15; border-radius: 4px; transition: width 0.3s; width: 0%; }
+.bar-fill.high { background: #ef4444; }
+
+/* Filters */
+#filters { display: flex; gap: 4px; margin-bottom: 6px; }
+#filters select { flex: 1; font-size: 11px; padding: 3px; }
+
+/* Results */
+#summary { font-weight: bold; margin-bottom: 4px; }
+#adsList { max-height: 200px; overflow-y: auto; border-top: 1px solid #ccc; padding-top: 4px; }
+.ad-entry { padding: 4px; border-bottom: 1px solid #eee; cursor: pointer; font-size: 11px; display: flex; align-items: center; gap: 4px; }
+.ad-entry:hover { background: #f0f0f0; }
+.format-tag { font-size: 9px; padding: 1px 4px; border-radius: 3px; background: #e5e7eb; white-space: nowrap; }
+.format-tag.banner { background: #dbeafe; color: #1e40af; }
+.format-tag.video, .format-tag.video_preroll, .format-tag.outstream { background: #fce7f3; color: #9d174d; }
+.format-tag.native { background: #d1fae5; color: #065f46; }
+.format-tag.popunder_script, .format-tag.popunder_network { background: #fee2e2; color: #991b1b; }
+.format-tag.interstitial { background: #fef3c7; color: #92400e; }
+
+/* Extra section */
+.section-title { font-weight: bold; font-size: 11px; margin: 6px 0 3px; color: #666; }
+#extraList { max-height: 100px; overflow-y: auto; }
+.extra-entry { padding: 3px; font-size: 11px; border-bottom: 1px solid #f3f3f3; }
+
+/* Settings */
+#tab-settings label { display: block; font-size: 12px; margin-bottom: 4px; }
+#tab-settings textarea { width: 100%; font-size: 11px; box-sizing: border-box; font-family: monospace; }
+#saveCustom { margin-top: 4px; padding: 5px 12px; font-size: 12px; }
+#saveStatus { font-size: 11px; color: #16a34a; margin-top: 4px; }

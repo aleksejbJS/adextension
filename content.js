@@ -1,16 +1,16 @@
-// content.js — content script for Adult Ad Detector
+// content.js — content script orchestrator
 
 (function () {
-  let foundAds = [];
-  let rules = null;
-  let observer = null;
-  let cssInjected = false;
-  let scanDebounce = null;
-  let scanning = false;
+  var foundAds = [];
+  var rules = null;
+  var observer = null;
+  var cssInjected = false;
+  var scanDebounce = null;
+  var scanning = false;
 
   function injectCSS() {
     if (cssInjected) return;
-    const link = document.createElement('link');
+    var link = document.createElement('link');
     link.rel = 'stylesheet';
     link.href = chrome.runtime.getURL('highlight.css');
     document.head.appendChild(link);
@@ -18,72 +18,106 @@
   }
 
   function clearHighlights() {
-    document.querySelectorAll('.ad-detector-highlight').forEach(el => {
+    document.querySelectorAll('.ad-detector-highlight').forEach(function (el) {
       el.classList.remove('ad-detector-highlight', 'ad-detector-focus');
-      el.querySelectorAll('.ad-detector-badge').forEach(b => b.remove());
+      el.querySelectorAll('.ad-detector-badge').forEach(function (b) { b.remove(); });
     });
   }
 
   function applyHighlights(ads) {
-    ads.forEach(ad => {
-      if (ad.element.classList.contains('ad-detector-highlight')) return;
+    ads.forEach(function (ad) {
+      if (!ad.element || ad.element.classList.contains('ad-detector-highlight')) return;
       ad.element.classList.add('ad-detector-highlight');
-      const badge = document.createElement('div');
+      var badge = document.createElement('div');
       badge.className = 'ad-detector-badge';
-      badge.innerText = 'AD';
+      badge.innerText = ad.network.substring(0, 12);
       ad.element.appendChild(badge);
     });
   }
 
+  function calcDensity(ads) {
+    var vw = window.innerWidth;
+    var vh = window.innerHeight;
+    var vpArea = vw * vh;
+    if (vpArea === 0) return 0;
+    var adArea = 0;
+    ads.forEach(function (ad) {
+      if (!ad.element) return;
+      var r = ad.element.getBoundingClientRect();
+      adArea += r.width * r.height;
+    });
+    return Math.min(Math.round((adArea / vpArea) * 100), 100);
+  }
+
   function runScan() {
-    if (!rules) return [];
+    if (!rules) return { ads: [], popunders: [], vast: [], density: 0 };
     scanning = true;
     injectCSS();
     clearHighlights();
     foundAds = detectAds(rules);
     applyHighlights(foundAds);
+    var popunders = (typeof detectPopunders === 'function') ? detectPopunders(rules) : [];
+    var vast = (typeof detectVAST === 'function') ? detectVAST() : [];
+    var density = calcDensity(foundAds);
     scanning = false;
-    chrome.runtime.sendMessage({ action: 'updateBadge', count: foundAds.length });
-    return foundAds;
+    var total = foundAds.length + popunders.length + vast.length;
+    chrome.runtime.sendMessage({ action: 'updateBadge', count: total });
+    return { ads: foundAds, popunders: popunders, vast: vast, density: density };
   }
 
   function startObserver() {
     if (observer) observer.disconnect();
-    observer = new MutationObserver(() => {
+    observer = new MutationObserver(function () {
       if (scanning) return;
       if (scanDebounce) clearTimeout(scanDebounce);
-      scanDebounce = setTimeout(() => runScan(), 1000);
+      scanDebounce = setTimeout(function () { runScan(); }, 1500);
     });
     observer.observe(document.body, { childList: true, subtree: true });
   }
 
-  function serializeAds(ads) {
-    return ads.map(({ network, format, size, reason }) => ({ network, format, size, reason }));
+  function serializeResult(scan) {
+    return {
+      ads: scan.ads.map(function (a) {
+        return { network: a.network, format: a.format, size: a.size, reason: a.reason };
+      }),
+      popunders: scan.popunders.map(function (p) {
+        return { type: p.type, detail: p.detail };
+      }),
+      vast: scan.vast.map(function (v) {
+        return { type: v.type, detail: v.detail };
+      }),
+      density: scan.density
+    };
   }
 
-  chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
+  chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
     if (msg.action === 'filterAds') {
       if (!rules) {
-        chrome.runtime.sendMessage({ action: 'getRules' }, (resp) => {
-          if (resp?.rules) {
+        chrome.runtime.sendMessage({ action: 'getRules' }, function (resp) {
+          if (resp && resp.rules) {
             rules = resp.rules;
-            const ads = runScan();
-            startObserver();
-            sendResponse({ ads: serializeAds(ads) });
+            // Also load custom rules from storage
+            chrome.storage.local.get('customDomains', function (data) {
+              if (data.customDomains) applyCustomRules(data.customDomains);
+              var scan = runScan();
+              startObserver();
+              sendResponse(serializeResult(scan));
+            });
           } else {
-            sendResponse({ ads: [] });
+            sendResponse({ ads: [], popunders: [], vast: [], density: 0 });
           }
         });
         return true;
       }
-      const ads = runScan();
+      var scan = runScan();
       startObserver();
-      sendResponse({ ads: serializeAds(ads) });
+      sendResponse(serializeResult(scan));
       return true;
     }
 
     if (msg.action === 'getResults') {
-      sendResponse({ ads: serializeAds(foundAds) });
+      var scan = { ads: foundAds, popunders: [], vast: [], density: calcDensity(foundAds) };
+      sendResponse(serializeResult(scan));
       return;
     }
 
@@ -97,12 +131,20 @@
     }
 
     if (msg.action === 'scrollToAd') {
-      const target = foundAds[msg.adIndex];
-      if (target?.element) {
+      var target = foundAds[msg.adIndex];
+      if (target && target.element) {
         target.element.scrollIntoView({ behavior: 'smooth', block: 'center' });
         target.element.classList.add('ad-detector-focus');
-        setTimeout(() => target.element.classList.remove('ad-detector-focus'), 2000);
+        setTimeout(function () { target.element.classList.remove('ad-detector-focus'); }, 2000);
       }
     }
   });
+
+  function applyCustomRules(customDomains) {
+    if (!rules || !customDomains || !customDomains.length) return;
+    if (!rules.networks['Custom']) {
+      rules.networks['Custom'] = { domains: [], scriptPatterns: [] };
+    }
+    rules.networks['Custom'].domains = customDomains;
+  }
 })();

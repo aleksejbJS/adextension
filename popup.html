@@ -2,21 +2,52 @@
 <html lang="ru">
   <head>
     <meta charset="UTF-8">
-    <style>
-      body { font-family: sans-serif; padding: 10px; width: 300px; }
-      button { margin: 5px 0; width: 100%; }
-      #summary { margin-top: 10px; font-size: 13px; font-weight: bold; }
-      #adsList { margin-top: 5px; font-size: 12px; max-height: 200px; overflow-y: auto; border-top: 1px solid #ccc; padding-top: 5px; }
-      .ad-entry { padding: 3px; border-bottom: 1px solid #eee; cursor: pointer; }
-      .ad-entry:hover { background: #f0f0f0; }
-    </style>
+    <link rel="stylesheet" href="popup.css">
   </head>
   <body>
     <h3>Adult Ad Detector</h3>
-    <button id="scanAds">Сканировать рекламу</button>
-    <button id="clearHighlight">Снять выделение</button>
-    <div id="summary">Найдено: 0</div>
-    <div id="adsList"></div>
+
+    <!-- Tabs -->
+    <div class="tabs">
+      <button class="tab active" data-tab="results">Результаты</button>
+      <button class="tab" data-tab="settings">Настройки</button>
+    </div>
+
+    <!-- Results tab -->
+    <div id="tab-results" class="tab-content active">
+      <div class="actions">
+        <button id="scanAds">Сканировать</button>
+        <button id="clearHighlight">Снять</button>
+      </div>
+
+      <div id="density-bar">
+        <span>Плотность рекламы:</span>
+        <div class="bar"><div class="bar-fill" id="densityFill"></div></div>
+        <span id="densityPct">0%</span>
+      </div>
+
+      <div id="filters">
+        <select id="filterNetwork"><option value="">Все сети</option></select>
+        <select id="filterFormat"><option value="">Все форматы</option></select>
+      </div>
+
+      <div id="summary">Найдено: 0</div>
+      <div id="adsList"></div>
+
+      <div id="extraSection" style="display:none">
+        <div class="section-title">Pop-under / VAST</div>
+        <div id="extraList"></div>
+      </div>
+    </div>
+
+    <!-- Settings tab -->
+    <div id="tab-settings" class="tab-content">
+      <label>Свои домены (по одному на строку):</label>
+      <textarea id="customDomains" rows="5" placeholder="example.com&#10;cdn.adnetwork.net"></textarea>
+      <button id="saveCustom">Сохранить</button>
+      <div id="saveStatus"></div>
+    </div>
+
     <script src="popup.js"></script>
   </body>
 </html>

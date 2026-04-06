@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Adult Ad Detector",
-  "version": "1.1",
+  "version": "1.2",
   "description": "Определяет и подсвечивает взрослую рекламу от определенных рекламных сетей.",
   "permissions": [
     "scripting",
@@ -26,7 +26,12 @@
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["detection-core.js", "content.js"],
+      "js": [
+        "detection-core.js",
+        "detection-popunder.js",
+        "detection-vast.js",
+        "content.js"
+      ],
       "run_at": "document_idle"
     }
   ],

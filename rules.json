@@ -11,11 +11,12 @@
     },
     "ExoClick": {
       "domains": [
-        "a.magsrv.com", "s.orbsrv.com", "syndication.exoclick.com",
-        "static.exoclick.com", "main.exoclick.com", "ads.exoclick.com",
-        "s3t3d2y9.afcdn.net", "aucdn.net"
+        "a.magsrv.com", "s.magsrv.com", "s.orbsrv.com",
+        "syndication.exoclick.com", "static.exoclick.com",
+        "main.exoclick.com", "ads.exoclick.com",
+        "afcdn.net", "aucdn.net"
       ],
-      "scriptPatterns": ["exoclick", "exosrv", "magsrv", "orbsrv"],
+      "scriptPatterns": ["exoclick", "exosrv", "magsrv", "orbsrv", "exo-native"],
       "textPatterns": ["exoclick"]
     },
     "JuicyAds": {

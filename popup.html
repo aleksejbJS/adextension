@@ -7,7 +7,6 @@
   <body>
     <h3>Adult Ad Detector</h3>
 
-    <!-- Tabs -->
     <div class="tabs">
       <button class="tab active" data-tab="results">Результаты</button>
       <button class="tab" data-tab="settings">Настройки</button>
@@ -19,9 +18,13 @@
         <button id="scanAds">Сканировать</button>
         <button id="clearHighlight">Снять</button>
       </div>
+      <div class="actions">
+        <button id="manualMode">Отметить вручную</button>
+        <button id="exportReport">Экспорт отчёта</button>
+      </div>
 
       <div id="density-bar">
-        <span>Плотность рекламы:</span>
+        <span>Плотность:</span>
         <div class="bar"><div class="bar-fill" id="densityFill"></div></div>
         <span id="densityPct">0%</span>
       </div>

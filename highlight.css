@@ -37,6 +37,13 @@
     }
   }
   
+  /* Manual mode hover */
+  .ad-detector-hover {
+    outline: 2px dashed #3b82f6 !important;
+    outline-offset: 2px;
+    cursor: crosshair !important;
+  }
+
   .ad-detector-badge {
     position: absolute;
     top: -8px;

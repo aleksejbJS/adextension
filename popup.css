@@ -42,5 +42,9 @@ h3 { margin: 0 0 8px; font-size: 15px; }
 /* Settings */
 #tab-settings label { display: block; font-size: 12px; margin-bottom: 4px; }
 #tab-settings textarea { width: 100%; font-size: 11px; box-sizing: border-box; font-family: monospace; }
+/* Manual mode button */
+#manualMode.active-mode { background: #16a34a; color: #fff; font-weight: bold; }
+#exportReport { background: #f0f0f0; }
+
 #saveCustom { margin-top: 4px; padding: 5px 12px; font-size: 12px; }
 #saveStatus { font-size: 11px; color: #16a34a; margin-top: 4px; }

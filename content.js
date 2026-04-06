@@ -61,7 +61,9 @@
     var density = calcDensity(foundAds);
     scanning = false;
     var total = foundAds.length + popunders.length + vast.length;
-    chrome.runtime.sendMessage({ action: 'updateBadge', count: total });
+    chrome.runtime.sendMessage({ action: 'updateBadge', count: total }, function () {
+      void chrome.runtime.lastError;
+    });
     return { ads: foundAds, popunders: popunders, vast: vast, density: density };
   }
 
@@ -112,7 +114,7 @@
       var scan = runScan();
       startObserver();
       sendResponse(serializeResult(scan));
-      return true;
+      return;
     }
 
     if (msg.action === 'getResults') {
@@ -127,12 +129,14 @@
       scanning = false;
       foundAds = [];
       if (observer) { observer.disconnect(); observer = null; }
-      chrome.runtime.sendMessage({ action: 'updateBadge', count: 0 });
+      chrome.runtime.sendMessage({ action: 'updateBadge', count: 0 }, function () {
+        void chrome.runtime.lastError;
+      });
     }
 
     if (msg.action === 'scrollToAd') {
       var target = foundAds[msg.adIndex];
-      if (target && target.element) {
+      if (target && target.element && document.contains(target.element)) {
         target.element.scrollIntoView({ behavior: 'smooth', block: 'center' });
         target.element.classList.add('ad-detector-focus');
         setTimeout(function () { target.element.classList.remove('ad-detector-focus'); }, 2000);

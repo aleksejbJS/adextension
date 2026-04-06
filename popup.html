@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8">
+    <style>
+      body { font-family: sans-serif; padding: 10px; width: 300px; }
+      button { margin: 5px 0; width: 100%; }
+      #summary { margin-top: 10px; font-size: 13px; font-weight: bold; }
+      #adsList { margin-top: 5px; font-size: 12px; max-height: 200px; overflow-y: auto; border-top: 1px solid #ccc; padding-top: 5px; }
+      .ad-entry { padding: 3px; border-bottom: 1px solid #eee; cursor: pointer; }
+      .ad-entry:hover { background: #f0f0f0; }
+    </style>
+  </head>
+  <body>
+    <h3>Adult Ad Detector</h3>
+    <button id="scanAds">Сканировать рекламу</button>
+    <button id="clearHighlight">Снять выделение</button>
+    <div id="summary">Найдено: 0</div>
+    <div id="adsList"></div>
+    <script src="popup.js"></script>
+  </body>
+</html>

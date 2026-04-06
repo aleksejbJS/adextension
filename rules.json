@@ -1,0 +1,38 @@
+{
+  "networks": {
+    "TrafficStars": {
+      "domains": ["lcdn.tsyndicate.com", "pxl.tsyndicate.com", "tsyndicate.com"],
+      "textPatterns": ["ads by trafficstars"],
+      "containerSelectors": [".mn-thumb", ".dsa_container"]
+    },
+    "ExoClick": {
+      "domains": ["a.magsrv.com", "s.orbsrv.com", "s3t3d2y9.afcdn.net", "aucdn.net"]
+    },
+    "DigitalPerformance": {
+      "domains": ["rtbsuperhub.com"],
+      "iframeWrapper": "div"
+    },
+    "TubeCorporate": {
+      "domains": ["poloptrex.com"]
+    }
+  },
+  "formatRules": {
+    "video_preroll": {
+      "parentSelectors": [".video-player", ".jw-wrapper", ".vjs-tech", ".plyr"]
+    },
+    "outstream": {
+      "classHints": ["outstream", "in-article", "inread", "in-content-video"]
+    },
+    "native": {
+      "classHints": ["native", "sponsored-content", "promoted", "recommendation"],
+      "selectors": ["[data-ad-type='native']", "[data-widget='native']"]
+    },
+    "banner": {
+      "sizes": [
+        "300x250", "728x90", "160x600", "320x50", "970x250",
+        "336x280", "300x600", "970x90", "250x250", "200x200",
+        "468x60", "120x600", "900x250"
+      ]
+    }
+  }
+}
